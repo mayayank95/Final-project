@@ -8,3 +8,6 @@ Create an account on Kaggle. Once logged in, go to the "Rules" page for the Cats
 The following two questions assume you are on Google Colab. If running locally, instead follow the instructions on Kaggle's API documentation and create the required folders yourself.
 
 On Kaggle, go to "Account > Create API Token" on the site, to download the API Token file kaggle.json. Upload this file to the Google Colab runtime, move it to the directory ~/.kaggle and set its permissions using the code below.
+
+
+masks_paths.csv - Table with the paths of the images and the corresponding segmentation masks in RLE-format.
