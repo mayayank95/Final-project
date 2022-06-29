@@ -35,13 +35,14 @@ def read_image_by_path(path):
     return img
 
 
-def generator_images(df_paths):
+def generator_images(df_paths, list_paths):
     """
+    :param list_paths: list of the paths of the images
     :param df_paths: Table with the paths of the image and the corresponding segmentation mask in RLE-format.
     :return: The original image, the mask in 4d matrix format, the id of the image
     """
-    filelist = set(df_paths.path)
-    for path in filelist:
+    # filelist = df_paths.path
+    for path in list_paths:
         img = read_image_by_path(path)
         id_img = df_paths[df_paths.path == path].id.iloc[0]
         rle_mask = df_paths[df_paths.id == id_img].segmentation
@@ -53,7 +54,7 @@ def generator_images(df_paths):
 def plot_image_mask(img, img_seg, id_img, title="original"):
     fig = plt.figure(figsize=(20, 4))
     num_cols = 5
-    plt.suptitle(id_img+"-"+title)
+    plt.suptitle(id_img + "-" + title)
     ax = fig.add_subplot(1, num_cols, 1)
     ax.imshow(img)
     for i in range(4):
@@ -70,7 +71,7 @@ def generator_batch_images(im_dim, df_paths, batchsize=32, interpolation=cv2.INT
     :return: batch of the original image and batch of the masks in 4d matrix format
     """
     while True:
-        ig = generator_images(df_paths)
+        ig = generator_images(df_paths, df_paths.dropna().path)
         batch_img, batch_mask = [], []
 
         for img, mask, id in ig:

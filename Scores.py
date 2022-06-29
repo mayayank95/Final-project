@@ -5,7 +5,7 @@ def dice_coef(y_true, y_pred):
     y_pred_f = y_pred.flatten()
     intersection = np.sum(y_true_f * y_pred_f)
     smooth = 0.0001
-    return (2. * intersection + smooth) / (np.sum(y_true_f) + np.sum(y_pred_f) + smooth)
+    return (2. * intersection + smooth/2) / (np.sum(y_true_f) + np.sum(y_pred_f) + smooth)
 
 
 def dice_coef_multilabel(y_true, y_pred, num_labels, flag=0):
