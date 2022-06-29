@@ -35,32 +35,37 @@ def read_image_by_path(path):
     return img
 
 
-def generator_images(df_paths, list_paths):
+def generator_images(df_paths, flag=1):
     """
-    :param list_paths: list of the paths of the images
+    :param flag: 1-choose only images with mask, 0-choose all the image
     :param df_paths: Table with the paths of the image and the corresponding segmentation mask in RLE-format.
     :return: The original image, the mask in 4d matrix format, the id of the image
     """
-    # filelist = df_paths.path
+
+    list_paths = df_paths.path.drop_duplicates()
     for path in list_paths:
         img = read_image_by_path(path)
         id_img = df_paths[df_paths.path == path].id.iloc[0]
         rle_mask = df_paths[df_paths.id == id_img].segmentation
         img_seg = create_mask(img.shape, rle_mask)
-        if img_seg[:, :, :3].max() > 0:
+        if flag:
+            if img_seg[:, :, :3].max() > 0:
+                yield (np.expand_dims(img, 2), img_seg, id_img)
+        else:
             yield (np.expand_dims(img, 2), img_seg, id_img)
 
 
-def plot_image_mask(img, img_seg, id_img, title="original"):
+def plot_image_mask(img, img_seg, id_img, classes, title="Ground Truth"):
     fig = plt.figure(figsize=(20, 4))
     num_cols = 5
-    plt.suptitle(id_img + "-" + title)
+    plt.suptitle(id_img + "-" + title, fontsize=14)
     ax = fig.add_subplot(1, num_cols, 1)
     ax.imshow(img)
     for i in range(4):
         ax = fig.add_subplot(1, num_cols, i + 2)
         ax.imshow(img_seg[:, :, i])
-    plt.tight_layout(pad=2)
+        ax.set_title(classes[i])
+    plt.tight_layout(pad=5)
 
 
 def generator_batch_images(im_dim, df_paths, batchsize=32, interpolation=cv2.INTER_NEAREST):
