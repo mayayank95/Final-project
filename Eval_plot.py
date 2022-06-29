@@ -56,7 +56,7 @@ def plot_examples(paths, name_set, num_examples, img_dim, interpolation, model, 
     plt.suptitle(name_set + "-examples", fontsize=23)
     num_rows = num_examples * 2
     num_cols = 5
-    image_gen = generator_images(paths)
+    image_gen = generator_images(paths, paths.dropna().path)
 
     for number in range(1, num_examples * 10 + 1, 10):
         img, img_seg, id_img = next(image_gen)
@@ -73,3 +73,4 @@ def plot_examples(paths, name_set, num_examples, img_dim, interpolation, model, 
     plt.tight_layout(pad=2)
     fig.subplots_adjust(top=0.96)
     plt.savefig(path + "_" + name_set + '-examples.png')
+
