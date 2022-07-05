@@ -10,8 +10,6 @@ The following two questions assume you are on Google Colab. If running locally, 
 On Kaggle, go to "Account > Create API Token" on the site, to download the API Token file kaggle.json. Upload this file to the Google Colab runtime, move it to the directory ~/.kaggle and set its permissions using the code below.
 
 
-masks_paths.csv - Table with the paths of the images and the corresponding segmentation masks in RLE-format.
-
 At the beginning of each notebook, change parentDir to the directory that includes all the files in your drive. 
 
 FinalProject_Main_notebook.ipynb - The notebook that includes the training and evaluation of the model with all the necessary steps before.
